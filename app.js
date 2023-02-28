@@ -13,6 +13,9 @@ app.set("view engine", "ejs");
 // Log出力
 app.use(logger("dev"));
 
+// public配下はstaticで使用
+app.use(express.static("public"));
+
 // session設定
 app.use(
   session({
@@ -27,9 +30,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // route
 app.get("/", routes.index);
-app.get("/board", middleware.loginCheck, routes.show);
+app.post("/board", middleware.loginCheck, routes.show);
 app.get("/login", routes.login);
-app.post("/login", middleware.loginCheck, routes.index);
 
 // サーバー設定
 app.listen(8000, console.log("サーバー起動"));

@@ -7,5 +7,11 @@ exports.show = (req, res) => {
 };
 
 exports.login = (req, res) => {
-  res.render("login");
+  // エラーあれば格納
+  let err = "";
+  if (req.session.err) {
+    err = req.session.err;
+  }
+
+  res.render("login", { err });
 };

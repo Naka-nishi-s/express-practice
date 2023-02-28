@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css" />
     <title>掲示板</title>
   </head>
 
   <body>
-    <h1>掲示板へようこそ！</h1>
-    <p><a href="/board">掲示板はこちら</a></p>
+    <div class="top">
+      <h1>掲示板へようこそ！</h1>
+
+      <form action="/board" method="post">
+        <button type="submit">掲示板はこちら</button>
+      </form>
+    </div>
   </body>
 
 </html>

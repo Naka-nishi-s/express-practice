@@ -11,7 +11,11 @@
   <body>
     <h1>ログイン</h1>
 
-    <form action="/login" method="post">
+    <p>
+      <%= err %>
+    </p>
+
+    <form action="/board" method="post">
       <label>
         名前
         <input type="text" name="name">
