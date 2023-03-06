@@ -3,6 +3,16 @@ const logger = require("morgan");
 const session = require("express-session");
 const routes = require("./routes/routes");
 const middleware = require("./middleware/login");
+const mongoose = require("mongoose");
+
+// urlの設定
+const url = "mongodb://127.0.0.1/test_db";
+
+// mongoDBに接続
+mongoose
+  .connect(url)
+  .then(() => console.log("Connect Success!"))
+  .catch((err) => console.log(err));
 
 const app = express();
 
@@ -30,8 +40,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // route
 app.get("/", routes.index);
-app.post("/board", middleware.loginCheck, routes.show);
 app.get("/login", routes.login);
+app.post("/board", middleware.loginCheck, routes.show);
 
 // サーバー設定
 app.listen(8000, console.log("サーバー起動"));

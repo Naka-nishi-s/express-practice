@@ -1,24 +1,38 @@
-exports.loginCheck = (req, res, next) => {
+const User = require("../models/User");
+
+exports.loginCheck = async (req, res, next) => {
   // データを取り出す
-  const name = req.body.name;
+  const email = req.body.email;
   const pass = req.body.pass;
 
-  // adminじゃなくてDBから取ってきて照合する処理
-  if (name === undefined || pass === undefined) {
-    req.session.err = "先にログインをお願いします。";
-    return res.redirect("/login");
+  // エラーメッセージ
+  const err_msg1 = "メールアドレスが未登録です。";
+  const err_msg2 = "メールアドレス、またはパスワードが違います。";
+
+  // ユーザ検索
+  try {
+    await User.findOne({ email: email })
+      .then((response) => {
+        if (!response) {
+          // メアドが見つからない場合
+          err = err_msg1;
+        } else {
+          if (response.password !== pass) {
+            // パスワードが違う場合
+            err = err_msg2;
+          } else {
+            // 問題なければ名前を格納して掲示板へ
+            res.locals.name = response.name;
+            return next();
+          }
+        }
+      })
+      .catch((err) => {
+        console.log("エラー内容：", err);
+      });
+  } catch (e) {
+    console.log("tryのエラー:", e.err);
   }
 
-  // ユーザー名かパスワード違ったらリダイレクト
-  if (name !== "admin" || pass !== "admin") {
-    req.session.err = "ユーザー名、もしくはパスワードが違います。";
-    return res.redirect("/login");
-  }
-
-  // sessionにユーザー情報を格納
-  req.session.user = {
-    name,
-    pass,
-  };
-  return next();
+  return res.render("login", { err });
 };

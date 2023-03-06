@@ -3,15 +3,10 @@ exports.index = (req, res) => {
 };
 
 exports.show = (req, res) => {
-  res.render("board");
+  console.log(res.locals.name);
+  res.render("board", { username: res.locals.name });
 };
 
 exports.login = (req, res) => {
-  // エラーあれば格納
-  let err = "";
-  if (req.session.err) {
-    err = req.session.err;
-  }
-
-  res.render("login", { err });
+  res.render("login", { err: "" });
 };
